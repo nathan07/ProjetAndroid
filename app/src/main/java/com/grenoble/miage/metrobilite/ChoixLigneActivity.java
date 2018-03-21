@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import java.io.IOException;
+
 /**
  * Created by prinsacn on 21/03/18.
  */
@@ -21,6 +23,22 @@ public class ChoixLigneActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choix_ligne);
+
+        final DataCollector dataCollector = new DataCollector();
+        try {
+            new Thread() {
+                public void run() {
+                    try {
+                        dataCollector.getData();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }.start();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         retour = (Button) findViewById(R.id.retour_button);
         retour.setOnClickListener(new View.OnClickListener() {
