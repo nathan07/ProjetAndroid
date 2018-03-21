@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Metrobilite</string>
+    <string name="horaires_button_name">Horaires</string>
+    <string name="favoris_button_name">Favoris</string>
+    <string name="geolocalisation_button_name">Géolocalisation</string>
+    <string name="about_button_name">About</string>
+</resources>

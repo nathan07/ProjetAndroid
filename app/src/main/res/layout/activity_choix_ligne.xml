@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:text="Retour au menu"
+        android:layout_width="132dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/retour_button" />
+
+    <TextView
+        android:text="Choisissez votre ligne :"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/retour_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="86dp"
+        android:id="@+id/textView" />
+
+    <Button
+        android:text="A"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_toStartOf="@+id/textView"
+        android:layout_marginTop="43dp"
+        android:id="@+id/ligneA_button" />
+
+    <Button
+        android:text="B"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ligneA_button"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/ligneB_button" />
+
+    <Button
+        android:text="C"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ligneB_button"
+        android:layout_toEndOf="@+id/textView"
+        android:id="@+id/ligneC_button" />
+</RelativeLayout>

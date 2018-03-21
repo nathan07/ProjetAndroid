@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_accueil"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.grenoble.miage.metrobilite.AccueilActivity">
+
+    <Button
+        android:text="Horaires"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="54dp"
+        android:id="@+id/horaires_button"
+        android:layout_x="146dp"
+        android:layout_y="76dp" />
+
+    <Button
+        android:text="Géolocalisation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/geolocalisation_button"
+        android:layout_x="135dp"
+        android:layout_y="219dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:text="Favoris"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/favoris_button"
+        android:layout_x="165dp"
+        android:layout_y="142dp"
+        android:layout_marginTop="31dp"
+        android:layout_below="@+id/horaires_button"
+        android:layout_alignEnd="@+id/horaires_button" />
+
+    <Button
+        android:text="About"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:id="@+id/about_button"
+        android:layout_below="@+id/geolocalisation_button"
+        android:layout_alignStart="@+id/favoris_button" />
+</RelativeLayout>
