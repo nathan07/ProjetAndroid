@@ -61,6 +61,9 @@ public class ChoixLigneActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 JSONObject jsonObject = lignes[i];
                 System.out.println("click on : "+jsonObject.toString());
+                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                choixArret.putExtra("JSON", jsonObject.toString());
+                startActivity(choixArret);
             }
         });
         ligneA = (Button) findViewById(R.id.ligneA_button);

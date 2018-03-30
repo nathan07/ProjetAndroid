@@ -16,6 +16,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChoixLigneActivity"/>
+        <activity android:name=".ChoixArretActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
