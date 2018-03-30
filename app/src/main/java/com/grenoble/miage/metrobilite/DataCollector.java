@@ -25,7 +25,7 @@ public class DataCollector {
 
     }
 
-    public void getData() throws IOException {
+    public JSONObject[] getData() throws IOException {
         url = new URL("https://data.metromobilite.fr/api/routers/default/index/routes");
         conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
@@ -40,6 +40,7 @@ public class DataCollector {
         StringBuilder result = new StringBuilder();
 
         String line;
+        JSONObject[] lignes = null;
 
         while((line = reader.readLine()) != null) {
             result.append(line);
@@ -48,7 +49,8 @@ public class DataCollector {
         try {
             JSONArray json = new JSONArray(result.toString());
             System.out.println("json: "+json);
-            JSONObject[] lignes = new JSONObject[json.length()];
+            int nbLignesSemitag = compterLignesSemitag(json);
+            lignes = new JSONObject[nbLignesSemitag];
             int indexLignes = 0;
             for(int i = 0;i<json.length();i++) {
                 if(json.getJSONObject(i).getString("id").contains("SEM")) {
@@ -65,7 +67,23 @@ public class DataCollector {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        
+
+        return lignes;
+    }
+
+    private int compterLignesSemitag(JSONArray json) {
+        int count = 0;
+        for(int i = 0;i<json.length();i++) {
+            try {
+                if(json.getJSONObject(i).getString("id").contains("SEM")) {
+                    count++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        return count;
     }
 
 }
