@@ -25,8 +25,8 @@ public class DataCollector {
 
     }
 
-    public JSONObject[] getData() throws IOException {
-        url = new URL("https://data.metromobilite.fr/api/routers/default/index/routes");
+    public JSONObject[] getDataLignes(String link) throws IOException {
+        url = new URL(link);
         conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.connect();
@@ -86,4 +86,43 @@ public class DataCollector {
         return count;
     }
 
+    public JSONObject[] getDataArrets(String link) throws IOException {
+        url = new URL(link);
+        conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("GET");
+        conn.connect();
+
+        int responseCode = conn.getResponseCode();
+
+        System.out.println("response : "+conn.getResponseCode());
+
+        InputStream inputStream = new BufferedInputStream(conn.getInputStream());
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+
+        String line;
+        JSONObject[] arrets = null;
+
+        while((line = reader.readLine()) != null) {
+            result.append(line);
+        }
+
+        try {
+            JSONArray json = new JSONArray(result.toString());
+            System.out.println("json: "+json);
+            arrets = new JSONObject[json.length()];
+            for(int i = 0;i<json.length();i++) {
+                    arrets[i] = json.getJSONObject(i);
+            }
+
+            for(int i = 0;i<json.length();i++) {
+                System.out.println("lignes["+i+"] : "+ arrets[i]);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return arrets;
+    }
 }

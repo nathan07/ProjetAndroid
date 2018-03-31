@@ -4,17 +4,12 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
-/**
- * Created by prinsacn on 28/03/18.
- */
-
-public class ThreadRecupLignes extends Thread {
-
+public class ThreadRecupArrets extends Thread {
     private JSONObject[] tab;
     private DataCollector data;
     private String url;
 
-    public ThreadRecupLignes(JSONObject[] tab, DataCollector data, String url) {
+    public ThreadRecupArrets(JSONObject[] tab, DataCollector data, String url) {
         this.tab = tab;
         this.data = data;
         this.url = url;
@@ -22,7 +17,7 @@ public class ThreadRecupLignes extends Thread {
 
     public void run() {
         try {
-            tab = data.getDataLignes(url);
+            tab = data.getDataArrets(url);
 
         } catch (IOException e) {
             e.printStackTrace();

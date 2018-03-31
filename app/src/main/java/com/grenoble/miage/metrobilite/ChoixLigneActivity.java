@@ -34,7 +34,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
 
         final DataCollector dataCollector = new DataCollector();
         try {
-            ThreadRecupLignes thread = new ThreadRecupLignes(lignes, dataCollector);
+            ThreadRecupLignes thread = new ThreadRecupLignes(lignes, dataCollector, "https://data.metromobilite.fr/api/routers/default/index/routes");
             thread.start();
             thread.join();
             lignes = thread.getTab();
