@@ -17,6 +17,7 @@
         </activity>
         <activity android:name=".ChoixLigneActivity"/>
         <activity android:name=".ChoixArretActivity"/>
+        <activity android:name=".AfficheHorairesActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

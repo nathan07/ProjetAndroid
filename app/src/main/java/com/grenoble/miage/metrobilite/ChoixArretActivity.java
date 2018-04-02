@@ -1,7 +1,10 @@
 package com.grenoble.miage.metrobilite;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -59,5 +62,16 @@ public class ChoixArretActivity extends AppCompatActivity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChoixArretActivity.this,
                 android.R.layout.simple_list_item_1, namesArrets);
         choixArrets.setAdapter(adapter);
+
+        choixArrets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                JSONObject jsonObject = arrets[i];
+                System.out.println("click on : "+jsonObject.toString());
+                Intent horaires = new Intent(ChoixArretActivity.this, AfficheHorairesActivity.class);
+                horaires.putExtra("JSON", jsonObject.toString());
+                startActivity(horaires);
+            }
+        });
     }
 }
