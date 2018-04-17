@@ -2,6 +2,8 @@ package com.grenoble.miage.metrobilite;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -15,6 +17,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
     private TextView ligne;
     private TextView destination;
     private TextView arretChoisi;
+    private Switch choixDirection;
     private int direction = 0;
     private int hours;
     private int minutes;
@@ -43,8 +46,27 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         ligne = (TextView) findViewById(R.id.rappelLigne);
         destination = (TextView) findViewById(R.id.rappelDestination);
         arretChoisi = (TextView) findViewById(R.id.rappelArret);
+        choixDirection = (Switch) findViewById(R.id.choixDirection);
+
+        choixDirection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b) {
+                    direction = 1;
+                }
+                else {
+                    direction = 0;
+                }
+                rafraichirAffichage();
+            }
+        });
 
         hor = (TextView) findViewById(R.id.horaire);
+        rafraichirAffichage();
+
+    }
+
+    private void rafraichirAffichage() {
         try {
             ligne.setText(horaires[direction].getJSONObject("pattern").getString("id"));
             destination.setText(horaires[direction].getJSONObject("pattern").getString("desc"));
@@ -59,6 +81,5 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 }
