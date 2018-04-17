@@ -12,6 +12,12 @@ public class AfficheHorairesActivity extends AppCompatActivity {
 
     private JSONObject[] horaires;
     private TextView hor;
+    private TextView ligne;
+    private TextView destination;
+    private TextView arretChoisi;
+    private int direction = 0;
+    private int hours;
+    private int minutes;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +26,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         Arret arret = null;
         arret = new Arret(extras.getStringArray("ARRET"));
 
-        System.out.println("objet recupere : "+arret);
+        System.out.println("objet recupere : "+arret.getCode());
 
         String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+arret.getCode()+"/stoptimes";
 
@@ -34,10 +40,22 @@ public class AfficheHorairesActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        ligne = (TextView) findViewById(R.id.rappelLigne);
+        destination = (TextView) findViewById(R.id.rappelDestination);
+        arretChoisi = (TextView) findViewById(R.id.rappelArret);
+
         hor = (TextView) findViewById(R.id.horaire);
         try {
-            JSONArray array = horaires[0].getJSONArray("times");
-            hor.setText(array.getString(0));
+            ligne.setText(horaires[direction].getJSONObject("pattern").getString("id"));
+            destination.setText(horaires[direction].getJSONObject("pattern").getString("desc"));
+            arretChoisi.setText(horaires[direction].getJSONArray("times").getJSONObject(0).getString("stopName"));
+
+            String nextArrival = horaires[direction].getJSONArray("times").getJSONObject(0).getString("scheduledArrival");
+            int test = Integer.parseInt(nextArrival);
+            hours = test/3600;
+            minutes = (test % 3600) / 60;
+            nextArrival = hours+"h"+minutes;
+            hor.setText(nextArrival);
         } catch (JSONException e) {
             e.printStackTrace();
         }
