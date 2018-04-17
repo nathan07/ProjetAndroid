@@ -12,8 +12,6 @@ import android.widget.ListView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-
 /**
  * Created by prinsacn on 21/03/18.
  */
@@ -21,11 +19,16 @@ import java.io.IOException;
 public class ChoixLigneActivity extends AppCompatActivity {
 
     private Button retour;
-    private Button ligneA;
-    private Button ligneB;
-    private Button ligneC;
-    private ListView listeLignes;
+    private ListView listeLignesTram;
+    private ListView listeLignesChrono;
+    private ListView listeLignesFlexo;
+    private ListView listeLignesProximo;
     private JSONObject[] lignes = null;
+    //private JSONObject[] lignesTram = null;
+    private Ligne[] lignesTram = null;
+    private Ligne[] lignesChrono = null;
+    private Ligne[] lignesFlexo = null;
+    private Ligne[] lignesProximo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,39 +46,112 @@ public class ChoixLigneActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        listeLignes = (ListView) findViewById(R.id.listeLignes);
-        final String[] shortNamesLignes = new String[lignes.length];
-        for(int i = 0;i<lignes.length;i++) {
+        /* TRAM */
+        listeLignesTram = (ListView) findViewById(R.id.listeLignesTram);
+        listeLignesChrono = (ListView) findViewById(R.id.listeLignesChrono);
+        listeLignesFlexo = (ListView) findViewById(R.id.listeLignesFlexo);
+        listeLignesProximo = (ListView) findViewById(R.id.listeLignesProximo);
+
+        final String[] shortNamesLignes = new String[compterLignes("TRAM", lignes)];
+        final String[] shortNamesLignesChrono = new String[compterLignes("CHRONO", lignes)];
+        final String[] shortNamesLignesFlexo = new String[compterLignes("FLEXO", lignes)];
+        final String[] shortNamesLignesProximo = new String[compterLignes("PROXIMO", lignes)];
+
+        //lignesTram = new JSONObject[compterLignes("TRAM", lignes)];
+        lignesTram = new Ligne[compterLignes("TRAM", lignes)];
+        lignesChrono = new Ligne[compterLignes("CHRONO", lignes)];
+        lignesFlexo = new Ligne[compterLignes("FLEXO", lignes)];
+        lignesProximo = new Ligne[compterLignes("PROXIMO", lignes)];
+
+        int indexLignesTram = 0;
+        int indexLignesChrono = 0;
+        int indexLignesFlexo = 0;
+        int indexLignesProximo = 0;
+        for(int i = 0; i< lignes.length; i++) {
             try {
-                shortNamesLignes[i] = lignes[i].getString("shortName");
+                if(lignes[i].getString("type").contains("TRAM")) {
+                    shortNamesLignes[indexLignesTram] = lignes[i].getString("shortName");
+                    lignesTram[indexLignesTram] = new Ligne(lignes[i]);
+                    indexLignesTram++;
+                }
+                else if(lignes[i].getString("type").contains("CHRONO")) {
+                    shortNamesLignesChrono[indexLignesChrono] = lignes[i].getString("shortName");
+                    lignesChrono[indexLignesChrono] = new Ligne(lignes[i]);
+                    indexLignesChrono++;
+                }
+                else if(lignes[i].getString("type").contains("FLEXO")) {
+                    shortNamesLignesFlexo[indexLignesFlexo] = lignes[i].getString("shortName");
+                    lignesFlexo[indexLignesFlexo] = new Ligne(lignes[i]);
+                    indexLignesFlexo++;
+                }
+                else if(lignes[i].getString("type").contains("PROXIMO")) {
+                    shortNamesLignesProximo[indexLignesProximo] = lignes[i].getString("shortName");
+                    lignesProximo[indexLignesProximo] = new Ligne(lignes[i]);
+                    indexLignesProximo++;
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChoixLigneActivity.this,
-                android.R.layout.simple_list_item_1, shortNamesLignes);
-        listeLignes.setAdapter(adapter);
 
-        listeLignes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /* adapter tram */
+        final ArrayAdapter<String> adapterTram = new ArrayAdapter<String>(ChoixLigneActivity.this,
+                android.R.layout.simple_list_item_1, shortNamesLignes);
+        listeLignesTram.setAdapter(adapterTram);
+
+        listeLignesTram.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                JSONObject jsonObject = lignes[i];
-                System.out.println("click on : "+jsonObject.toString());
+                //JSONObject jsonObject = lignesTram[i];
+                //System.out.println("click on : "+jsonObject.toString());
                 Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                choixArret.putExtra("JSON", jsonObject.toString());
+                //choixArret.putExtra("JSON", jsonObject.toString());
+                choixArret.putExtra("LIGNE", lignesTram[i].getTableau());
                 startActivity(choixArret);
             }
         });
-        ligneA = (Button) findViewById(R.id.ligneA_button);
-        try {
-            ligneA.setText(lignes[0].getString("shortName"));
-            ligneB = (Button) findViewById(R.id.ligneB_button);
-            ligneB.setText(lignes[1].getString("shortName"));
-            ligneC = (Button) findViewById(R.id.ligneC_button);
-            ligneC.setText(lignes[2].getString("shortName"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        /* adapter chrono */
+        final ArrayAdapter<String> adapterChrono = new ArrayAdapter<String>(ChoixLigneActivity.this,
+                android.R.layout.simple_list_item_1, shortNamesLignesChrono);
+        listeLignesChrono.setAdapter(adapterChrono);
+
+        listeLignesChrono.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                choixArret.putExtra("LIGNE", lignesChrono[i].getTableau());
+                startActivity(choixArret);
+            }
+        });
+
+        /* adapter flexo */
+        final ArrayAdapter<String> adapterFlexo = new ArrayAdapter<String>(ChoixLigneActivity.this,
+                android.R.layout.simple_list_item_1, shortNamesLignesFlexo);
+        listeLignesFlexo.setAdapter(adapterFlexo);
+
+        listeLignesFlexo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                choixArret.putExtra("LIGNE", lignesFlexo[i].getTableau());
+                startActivity(choixArret);
+            }
+        });
+
+        /* adapter proximo */
+        final ArrayAdapter<String> adapterProximo = new ArrayAdapter<String>(ChoixLigneActivity.this,
+                android.R.layout.simple_list_item_1, shortNamesLignesProximo);
+        listeLignesProximo.setAdapter(adapterProximo);
+
+        listeLignesProximo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                choixArret.putExtra("LIGNE", lignesProximo[i].getTableau());
+                startActivity(choixArret);
+            }
+        });
 
 
         retour = (Button) findViewById(R.id.retour_button);
@@ -86,5 +162,19 @@ public class ChoixLigneActivity extends AppCompatActivity {
                 startActivity(choixLigne);
             }
         });
+    }
+
+    private int compterLignes(String l, JSONObject[] lignes) {
+        int res = 0;
+        for(int i = 0;i<lignes.length;i++) {
+            try {
+                if(lignes[i].getString("type").contains(l)) {
+                    res++;
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return res;
     }
 }

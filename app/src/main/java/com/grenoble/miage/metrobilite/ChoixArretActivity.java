@@ -19,25 +19,20 @@ public class ChoixArretActivity extends AppCompatActivity {
 
     private ListView choixArrets;
     private JSONObject[] arrets = null;
+    private Arret[] arretTab = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choix_arret);
         Bundle extras = getIntent().getExtras();
-        JSONObject ligne = null;
-        try {
-            ligne = new JSONObject(extras.getString("JSON"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println("objet recupere : "+ligne);
+        Ligne l = null;
+
+        l = new Ligne(extras.getStringArray("LIGNE"));
 
         String link = "";
-        try {
-            link = "https://data.metromobilite.fr/api/routers/default/index/routes/"+ligne.getString("id")+"/clusters";
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+
+        link = "https://data.metromobilite.fr/api/routers/default/index/routes/"+l.getId()+"/clusters";
+
 
         final DataCollector dataCollector = new DataCollector();
 
@@ -52,12 +47,14 @@ public class ChoixArretActivity extends AppCompatActivity {
 
         choixArrets = (ListView) findViewById(R.id.listeArrets);
         final String[] namesArrets = new String[arrets.length];
+
+        arretTab = new Arret[arrets.length];
+        for(int i = 0; i < arrets.length;i++) {
+            arretTab[i] = new Arret(arrets[i]);
+        }
+
         for(int i = 0;i<arrets.length;i++) {
-            try {
-                namesArrets[i] = arrets[i].getString("name");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            namesArrets[i] = arretTab[i].getName();
         }
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChoixArretActivity.this,
                 android.R.layout.simple_list_item_1, namesArrets);
@@ -66,10 +63,8 @@ public class ChoixArretActivity extends AppCompatActivity {
         choixArrets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                JSONObject jsonObject = arrets[i];
-                System.out.println("click on : "+jsonObject.toString());
                 Intent horaires = new Intent(ChoixArretActivity.this, AfficheHorairesActivity.class);
-                horaires.putExtra("JSON", jsonObject.toString());
+                horaires.putExtra("ARRET", arretTab[i].getTableau());
                 startActivity(horaires);
             }
         });

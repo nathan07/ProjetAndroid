@@ -17,20 +17,12 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_affiche_horaires);
         Bundle extras = getIntent().getExtras();
-        JSONObject arret = null;
-        try {
-            arret = new JSONObject(extras.getString("JSON"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        Arret arret = null;
+        arret = new Arret(extras.getStringArray("ARRET"));
+
         System.out.println("objet recupere : "+arret);
 
-        String link = "";
-        try {
-            link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+arret.getString("code")+"/stoptimes";
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+arret.getCode()+"/stoptimes";
 
         final DataCollector dataCollector = new DataCollector();
         try {
@@ -45,7 +37,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         hor = (TextView) findViewById(R.id.horaire);
         try {
             JSONArray array = horaires[0].getJSONArray("times");
-            hor.setText(array.getString(4));
+            hor.setText(array.getString(0));
         } catch (JSONException e) {
             e.printStackTrace();
         }

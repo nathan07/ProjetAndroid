@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
         android:text="Retour au menu"
@@ -12,42 +14,79 @@
     <TextView
         android:text="Choisissez votre ligne :"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:id="@+id/textView"
         android:layout_below="@+id/retour_button"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="86dp"
-        android:id="@+id/textView" />
+        android:layout_marginTop="17dp"
+        android:layout_weight="0.46" />
 
-    <Button
-        android:text="A"
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Liste des trams"
         android:layout_below="@+id/textView"
-        android:layout_toStartOf="@+id/textView"
-        android:layout_marginTop="43dp"
-        android:id="@+id/ligneA_button" />
-
-    <Button
-        android:text="B"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ligneA_button"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/ligneB_button" />
-
-    <Button
-        android:text="C"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/ligneB_button"
-        android:layout_toEndOf="@+id/textView"
-        android:id="@+id/ligneC_button" />
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView5" />
 
     <ListView
-        android:id="@+id/listeLignes"
+        android:id="@+id/listeLignesTram"
+        android:layout_width="wrap_content"
+        android:layout_height="74dp"
+        android:scrollbars="horizontal|vertical"
+        android:layout_below="@+id/textView5"
+        android:layout_alignParentStart="true"
+        android:layout_weight="0.29">
+    </ListView>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ligneA_button">
+        android:text="Liste des bus Chronos"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/listeLignesTram"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:id="@+id/listeLignesChrono"
+        android:layout_width="match_parent"
+        android:layout_height="87dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentStart="true">
+    </ListView>
+
+    <TextView
+        android:layout_width="159dp"
+        android:layout_height="wrap_content"
+        android:text="Liste des bus Proximos"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/listeLignesProximo"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:id="@+id/listeLignesProximo"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_weight="0.67">
 
     </ListView>
-</RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Liste des bus Flexos"
+        android:id="@+id/textView4"
+        android:layout_above="@+id/listeLignesFlexo"
+        android:layout_alignParentStart="true" />
+
+    <ListView
+        android:id="@+id/listeLignesFlexo"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:layout_above="@+id/textView3"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="11dp">
+    </ListView>
+</LinearLayout>
