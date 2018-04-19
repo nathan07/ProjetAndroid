@@ -102,10 +102,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
         listeLignesTram.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                //JSONObject jsonObject = lignesTram[i];
-                //System.out.println("click on : "+jsonObject.toString());
                 Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                //choixArret.putExtra("JSON", jsonObject.toString());
                 choixArret.putExtra("LIGNE", lignesTram[i].getTableau());
                 startActivity(choixArret);
             }

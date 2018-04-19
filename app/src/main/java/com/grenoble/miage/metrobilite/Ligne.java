@@ -20,7 +20,7 @@ public class Ligne {
     public Ligne(JSONObject jsonObject) {
         try {
             this.id = jsonObject.getString("id");
-            this.shortName = jsonObject.getString("shorName");
+            this.shortName = jsonObject.getString("shortName");
             this.longName = jsonObject.getString("longName");
             this.color = jsonObject.getString("color");
             this.textColor = jsonObject.getString("textColor");

@@ -18,17 +18,20 @@ public class AfficheHorairesActivity extends AppCompatActivity {
     private TextView arretChoisi;
     private Switch choixDirection;
     private int direction = 1;
-    private int hours;
-    private int minutes;
     private Arret arret = null;
+    private String ligneId = null;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_affiche_horaires);
         Bundle extras = getIntent().getExtras();
-        arret = new Arret(extras.getStringArray("ARRET"));
-
-        System.out.println("objet recupere : "+arret.getCode());
+        System.out.println("recupere : "+extras.getStringArray("ARRET")[5]);
+        ligneId = extras.getStringArray("ARRET")[5];
+        String[] paramsArret = new String[extras.getStringArray("ARRET").length-1];
+        for(int i = 0;i<extras.getStringArray("ARRET").length-1;i++) {
+            paramsArret[i] = extras.getStringArray("ARRET")[i];
+        }
+        arret = new Arret(paramsArret);
 
         String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+arret.getCode()+"/stoptimes";
 
@@ -68,21 +71,21 @@ public class AfficheHorairesActivity extends AppCompatActivity {
     private void rafraichirAffichage() {
         try {
             int indicePattern = 0;
-            while((!horaires[indicePattern].getJSONObject("pattern").getString("id").contains("C")) || (!horaires[indicePattern].getJSONObject("pattern").getString("dir").equals(String.valueOf(direction)))) {
+            while((!horaires[indicePattern].getJSONObject("pattern").getString("id").startsWith(ligneId)) || (!horaires[indicePattern].getJSONObject("pattern").getString("dir").equals(String.valueOf(direction)))) {
                 indicePattern++;
             }
             ligne.setText(horaires[indicePattern].getJSONObject("pattern").getString("id"));
             destination.setText(horaires[indicePattern].getJSONObject("pattern").getString("desc"));
             arretChoisi.setText(arret.getName());
             String nextArrival = horaires[indicePattern].getJSONArray("times").getJSONObject(0).getString("scheduledArrival");
-            int test = Integer.parseInt(nextArrival);
-            hours = test/3600;
-            minutes = (test % 3600) / 60;
+            int nextArrivalInt = Integer.parseInt(nextArrival);
+            int hours = nextArrivalInt / 3600;
+            int minutes = (nextArrivalInt % 3600) / 60;
             if(minutes < 10) {
-                nextArrival = hours+"h0"+minutes;
+                nextArrival = hours +"h0"+ minutes;
             }
             else {
-                nextArrival = hours+"h"+minutes;
+                nextArrival = hours +"h"+ minutes;
             }
             hor.setText(nextArrival);
         } catch (JSONException e) {

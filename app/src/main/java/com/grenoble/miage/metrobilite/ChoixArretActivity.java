@@ -25,11 +25,9 @@ public class ChoixArretActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choix_arret);
         Bundle extras = getIntent().getExtras();
-        Ligne l = null;
+        final Ligne ligne = new Ligne(extras.getStringArray("LIGNE"));
 
-        l = new Ligne(extras.getStringArray("LIGNE"));
-
-        String link = "https://data.metromobilite.fr/api/routers/default/index/routes/"+l.getId()+"/clusters";
+        String link = "https://data.metromobilite.fr/api/routers/default/index/routes/"+ligne.getId()+"/clusters";
 
 
         final DataCollector dataCollector = new DataCollector();
@@ -62,7 +60,12 @@ public class ChoixArretActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent horaires = new Intent(ChoixArretActivity.this, AfficheHorairesActivity.class);
-                horaires.putExtra("ARRET", arretTab[i].getTableau());
+                String[] extra = new String[arretTab[i].getTableau().length+1];
+                for(int y = 0;y<arretTab[i].getTableau().length;y++) {
+                    extra[y] = arretTab[i].getTableau()[y];
+                }
+                extra[arretTab[i].getTableau().length] = ligne.getId();
+                horaires.putExtra("ARRET", extra);
                 startActivity(horaires);
             }
         });
