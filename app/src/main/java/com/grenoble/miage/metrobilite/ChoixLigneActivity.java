@@ -1,13 +1,20 @@
 package com.grenoble.miage.metrobilite;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.GridLayout;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,11 +53,13 @@ public class ChoixLigneActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        /* TRAM */
-        listeLignesTram = (ListView) findViewById(R.id.listeLignesTram);
-        listeLignesChrono = (ListView) findViewById(R.id.listeLignesChrono);
-        listeLignesFlexo = (ListView) findViewById(R.id.listeLignesFlexo);
-        listeLignesProximo = (ListView) findViewById(R.id.listeLignesProximo);
+        //recup
+        GridLayout linTram =(GridLayout) findViewById(R.id.trameLayout);
+        GridLayout linchrono =(GridLayout) findViewById(R.id.chronoLayout);
+        LinearLayout linProximo =(LinearLayout) findViewById(R.id.proximoLayout);
+        LinearLayout linFlexo =(LinearLayout) findViewById(R.id.flexoLayout);
+
+
 
         final String[] shortNamesLignes = new String[compterLignes("TRAM", lignes)];
         final String[] shortNamesLignesChrono = new String[compterLignes("CHRONO", lignes)];
@@ -94,71 +103,42 @@ public class ChoixLigneActivity extends AppCompatActivity {
             }
         }
 
-        /* adapter tram */
-        final ArrayAdapter<String> adapterTram = new ArrayAdapter<String>(ChoixLigneActivity.this,
-                android.R.layout.simple_list_item_1, shortNamesLignes);
-        listeLignesTram.setAdapter(adapterTram);
+        for(int i = 0; i< indexLignesTram; i++) {
+            /*int buttonStyle = R.drawable.buttoncircle;
+            Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
+            Button bt = new Button(this);
+            bt.setText(lignesTram[i].getShortName());
+            bt.setBackgroundColor(Color.parseColor("#"+lignesTram[i].getColor()));
+            final int finalI = i;
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                    choixArret.putExtra("LIGNE", lignesTram[finalI].getTableau());
+                    startActivity(choixArret);
+                }
+            });
+            linTram.addView(bt);
+        }
 
-        listeLignesTram.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                choixArret.putExtra("LIGNE", lignesTram[i].getTableau());
-                startActivity(choixArret);
-            }
-        });
+        for(int i = 0; i< indexLignesChrono; i++) {
+            /*int buttonStyle = R.style.Widget_AppCompat_ImageButton;
+            Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
+            Button bt = new Button(this);
+            bt.setText(lignesChrono[i].getShortName());
+            bt.setBackgroundColor(Color.parseColor("#"+lignesChrono[i].getColor()));
+            final int finalI = i;
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                    choixArret.putExtra("LIGNE", lignesChrono[finalI].getTableau());
+                    startActivity(choixArret);
+                }
+            });
+            linchrono.addView(bt);
+        }
 
-        /* adapter chrono */
-        final ArrayAdapter<String> adapterChrono = new ArrayAdapter<String>(ChoixLigneActivity.this,
-                android.R.layout.simple_list_item_1, shortNamesLignesChrono);
-        listeLignesChrono.setAdapter(adapterChrono);
-
-        listeLignesChrono.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                choixArret.putExtra("LIGNE", lignesChrono[i].getTableau());
-                startActivity(choixArret);
-            }
-        });
-
-        /* adapter flexo */
-        final ArrayAdapter<String> adapterFlexo = new ArrayAdapter<String>(ChoixLigneActivity.this,
-                android.R.layout.simple_list_item_1, shortNamesLignesFlexo);
-        listeLignesFlexo.setAdapter(adapterFlexo);
-
-        listeLignesFlexo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                choixArret.putExtra("LIGNE", lignesFlexo[i].getTableau());
-                startActivity(choixArret);
-            }
-        });
-
-        /* adapter proximo */
-        final ArrayAdapter<String> adapterProximo = new ArrayAdapter<String>(ChoixLigneActivity.this,
-                android.R.layout.simple_list_item_1, shortNamesLignesProximo);
-        listeLignesProximo.setAdapter(adapterProximo);
-
-        listeLignesProximo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                choixArret.putExtra("LIGNE", lignesProximo[i].getTableau());
-                startActivity(choixArret);
-            }
-        });
-
-
-        retour = (Button) findViewById(R.id.retour_button);
-        retour.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent choixLigne = new Intent(ChoixLigneActivity.this, AccueilActivity.class);
-                startActivity(choixLigne);
-            }
-        });
     }
 
     private int compterLignes(String l, JSONObject[] lignes) {

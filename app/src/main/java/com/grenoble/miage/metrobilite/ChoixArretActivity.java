@@ -27,6 +27,8 @@ public class ChoixArretActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         final Ligne ligne = new Ligne(extras.getStringArray("LIGNE"));
 
+
+
         String link = "https://data.metromobilite.fr/api/routers/default/index/routes/"+ligne.getId()+"/clusters";
 
 
