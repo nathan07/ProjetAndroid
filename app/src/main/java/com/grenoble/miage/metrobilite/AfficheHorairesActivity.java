@@ -9,6 +9,9 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class AfficheHorairesActivity extends AppCompatActivity {
 
     private JSONObject[] horaires;
@@ -33,17 +36,10 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         }
         arret = new Arret(paramsArret);
 
-        String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+arret.getCode()+"/stoptimes";
+        final String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+arret.getCode()+"/stoptimes";
 
         final DataCollector dataCollector = new DataCollector();
-        try {
-            ThreadRecupArrets thread = new ThreadRecupArrets(horaires, dataCollector, link);
-            thread.start();
-            thread.join();
-            horaires = thread.getTab();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        recupererHoraires(dataCollector, link);
 
         ligne = (TextView) findViewById(R.id.rappelLigne);
         destination = (TextView) findViewById(R.id.rappelDestination);
@@ -66,6 +62,20 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         hor = (TextView) findViewById(R.id.horaire);
         rafraichirAffichage();
 
+        Timer timer = new Timer();
+        TimerTask timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        recupererHoraires(dataCollector, link);
+                        rafraichirAffichage();
+                    }
+                });
+            }
+        };
+        timer.schedule(timerTask, 0, 30000);
     }
 
     private void rafraichirAffichage() {
@@ -89,6 +99,17 @@ public class AfficheHorairesActivity extends AppCompatActivity {
             }
             hor.setText(nextArrival);
         } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void recupererHoraires(DataCollector dataCollector, String link) {
+        try {
+            ThreadRecupArrets thread = new ThreadRecupArrets(horaires, dataCollector, link);
+            thread.start();
+            thread.join();
+            horaires = thread.getTab();
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
