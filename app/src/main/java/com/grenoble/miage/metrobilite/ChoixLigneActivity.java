@@ -1,23 +1,26 @@
 package com.grenoble.miage.metrobilite;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.view.ContextThemeWrapper;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * Created by prinsacn on 21/03/18.
@@ -32,11 +35,12 @@ public class ChoixLigneActivity extends AppCompatActivity {
     private ListView listeLignesProximo;
     private JSONObject[] lignes = null;
     //private JSONObject[] lignesTram = null;
-    private Ligne[] lignesTram = null;
+    private ArrayList<Ligne> lignesTram = null;
     private Ligne[] lignesChrono = null;
     private Ligne[] lignesFlexo = null;
     private Ligne[] lignesProximo = null;
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,9 +58,15 @@ public class ChoixLigneActivity extends AppCompatActivity {
         }
 
         //recup
-        GridLayout linTram =(GridLayout) findViewById(R.id.trameLayout);
-        GridLayout linchrono =(GridLayout) findViewById(R.id.chronoLayout);
-        LinearLayout linProximo =(LinearLayout) findViewById(R.id.proximoLayout);
+        TableLayout linTram =(TableLayout) findViewById(R.id.trameLayout);
+        ArrayList<TableRow> TabTram = new ArrayList<TableRow>();
+        TabTram.add((TableRow) findViewById(R.id.Rowtram1));
+        TabTram.add((TableRow) findViewById(R.id.Rowtram2));
+        TabTram.add((TableRow) findViewById(R.id.Rowtram3));
+        TabTram.add((TableRow) findViewById(R.id.Rowtram4));
+        TabTram.add((TableRow) findViewById(R.id.Rowtram5));
+        TableLayout linchrono =(TableLayout) findViewById(R.id.chronoLayout);
+        TableLayout linProximo =(TableLayout) findViewById(R.id.proximoLayout);
         LinearLayout linFlexo =(LinearLayout) findViewById(R.id.flexoLayout);
 
 
@@ -67,7 +77,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
         final String[] shortNamesLignesProximo = new String[compterLignes("PROXIMO", lignes)];
 
         //lignesTram = new JSONObject[compterLignes("TRAM", lignes)];
-        lignesTram = new Ligne[compterLignes("TRAM", lignes)];
+        lignesTram = new ArrayList<Ligne>();
         lignesChrono = new Ligne[compterLignes("CHRONO", lignes)];
         lignesFlexo = new Ligne[compterLignes("FLEXO", lignes)];
         lignesProximo = new Ligne[compterLignes("PROXIMO", lignes)];
@@ -80,7 +90,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
             try {
                 if(lignes[i].getString("type").contains("TRAM")) {
                     shortNamesLignes[indexLignesTram] = lignes[i].getString("shortName");
-                    lignesTram[indexLignesTram] = new Ligne(lignes[i]);
+                    lignesTram.add(new Ligne(lignes[i]));
                     indexLignesTram++;
                 }
                 else if(lignes[i].getString("type").contains("CHRONO")) {
@@ -103,22 +113,32 @@ public class ChoixLigneActivity extends AppCompatActivity {
             }
         }
 
+        lignesTram.sort(new Comparator<Ligne>() {
+            @Override
+            public int compare(Ligne ligne, Ligne t1) {
+                return ligne.getShortName().compareTo(t1.getShortName());
+            }
+        }) ;
         for(int i = 0; i< indexLignesTram; i++) {
-            /*int buttonStyle = R.drawable.buttoncircle;
+            /*int buttonStyle = R.style.Widget_AppCompat_Button;
             Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
             Button bt = new Button(this);
-            bt.setText(lignesTram[i].getShortName());
-            bt.setBackgroundColor(Color.parseColor("#"+lignesTram[i].getColor()));
+            bt.setText(lignesTram.get(i).getShortName());
+            bt.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.buttoncircle));
+            GradientDrawable backgroundGradient = (GradientDrawable)bt.getBackground();
+            backgroundGradient.setColor(Color.parseColor("#"+lignesTram.get(i).getColor()));
             final int finalI = i;
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                    choixArret.putExtra("LIGNE", lignesTram[finalI].getTableau());
+                    choixArret.putExtra("LIGNE", lignesTram.get(finalI).getTableau());
                     startActivity(choixArret);
                 }
             });
-            linTram.addView(bt);
+            //bt.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+System.out.println(i%5);
+            TabTram.get(0).addView(bt);
         }
 
         for(int i = 0; i< indexLignesChrono; i++) {
@@ -137,6 +157,24 @@ public class ChoixLigneActivity extends AppCompatActivity {
                 }
             });
             linchrono.addView(bt);
+        }
+
+        for(int i = 0; i< indexLignesProximo; i++) {
+            /*int buttonStyle = R.style.Widget_AppCompat_ImageButton;
+            Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
+            Button bt = new Button(this);
+            bt.setText(lignesProximo[i].getShortName());
+            bt.setBackgroundColor(Color.parseColor("#"+lignesProximo[i].getColor()));
+            final int finalI = i;
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                    choixArret.putExtra("LIGNE", lignesProximo[finalI].getTableau());
+                    startActivity(choixArret);
+                }
+            });
+            linProximo.addView(bt);
         }
 
     }

@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_alignParentBottom="false"
+    android:layout_alignParentEnd="true"
     android:orientation="vertical">
 
     <Button
@@ -15,80 +17,94 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/retour_button"
-        android:layout_centerHorizontal="true"
+        android:layout_height="0dp"
         android:layout_marginTop="17dp"
         android:layout_weight="0.46"
-        android:layout_x="2dp"
-        android:layout_y="64dp"
         android:text="Choisissez votre ligne :" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/textView"
-        android:layout_x="0dp"
-        android:layout_y="86dp"
+        android:baselineAligned="false"
         android:text="Liste des trams" />
 
-    <GridLayout
+    <TableLayout
         android:id="@+id/trameLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_x="0dp"
-        android:layout_y="105dp"
-        android:columnCount="5">
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-    </GridLayout>
+        <TableRow
+            android:id="@+id/Rowtram1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="5"/>
+
+        <TableRow
+            android:id="@+id/Rowtram2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <TableRow
+            android:id="@+id/Rowtram3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <TableRow
+            android:id="@+id/Rowtram4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" />
+
+        <TableRow
+            android:id="@+id/Rowtram5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        </TableRow>
+    </TableLayout>
+
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/listeLignesTram"
-        android:layout_x="0dp"
-        android:layout_y="105dp"
         android:text="Liste des bus Chronos" />
 
-    <GridLayout
+    <TableLayout
         android:id="@+id/chronoLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_x="0dp"
-        android:layout_y="125dp"
         android:columnCount="5">
 
-    </GridLayout>
+    </TableLayout>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="159dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/listeLignesProximo"
-        android:layout_alignParentStart="true"
-        android:layout_x="0dp"
-        android:layout_y="159dp"
         android:text="Liste des bus Proximos" />
 
-    <LinearLayout
+    <TableLayout
         android:id="@+id/proximoLayout"
-        android:layout_width="51dp"
-        android:layout_height="wrap_content"
-        android:layout_x="0dp"
-        android:orientation="horizontal"></LinearLayout>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:columnCount="5">
+
+    </TableLayout>
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/listeLignesFlexo"
-        android:layout_alignParentStart="true"
-        android:layout_x="0dp"
-        android:layout_y="228dp"
         android:text="Liste des bus Flexos" />
 
     <LinearLayout
