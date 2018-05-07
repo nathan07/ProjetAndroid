@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TableLayout;
@@ -36,9 +37,9 @@ public class ChoixLigneActivity extends AppCompatActivity {
     private JSONObject[] lignes = null;
     //private JSONObject[] lignesTram = null;
     private ArrayList<Ligne> lignesTram = null;
-    private Ligne[] lignesChrono = null;
-    private Ligne[] lignesFlexo = null;
-    private Ligne[] lignesProximo = null;
+    private ArrayList<Ligne> lignesChrono = null;
+    private ArrayList<Ligne> lignesFlexo = null;
+    private ArrayList<Ligne> lignesProximo = null;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -58,68 +59,76 @@ public class ChoixLigneActivity extends AppCompatActivity {
         }
 
         //recup
-        TableLayout linTram =(TableLayout) findViewById(R.id.trameLayout);
-        ArrayList<TableRow> TabTram = new ArrayList<TableRow>();
-        TabTram.add((TableRow) findViewById(R.id.Rowtram1));
-        TabTram.add((TableRow) findViewById(R.id.Rowtram2));
-        TabTram.add((TableRow) findViewById(R.id.Rowtram3));
-        TabTram.add((TableRow) findViewById(R.id.Rowtram4));
-        TabTram.add((TableRow) findViewById(R.id.Rowtram5));
-        TableLayout linchrono =(TableLayout) findViewById(R.id.chronoLayout);
-        TableLayout linProximo =(TableLayout) findViewById(R.id.proximoLayout);
-        LinearLayout linFlexo =(LinearLayout) findViewById(R.id.flexoLayout);
+        GridLayout linTram =(GridLayout) findViewById(R.id.trameLayout);
+
+        GridLayout linchrono =(GridLayout) findViewById(R.id.chronoLayout);
+        GridLayout linProximo =(GridLayout) findViewById(R.id.proximoLayout);
+        GridLayout linFlexo =(GridLayout) findViewById(R.id.flexoLayout);
 
 
-
-        final String[] shortNamesLignes = new String[compterLignes("TRAM", lignes)];
-        final String[] shortNamesLignesChrono = new String[compterLignes("CHRONO", lignes)];
-        final String[] shortNamesLignesFlexo = new String[compterLignes("FLEXO", lignes)];
-        final String[] shortNamesLignesProximo = new String[compterLignes("PROXIMO", lignes)];
 
         //lignesTram = new JSONObject[compterLignes("TRAM", lignes)];
         lignesTram = new ArrayList<Ligne>();
-        lignesChrono = new Ligne[compterLignes("CHRONO", lignes)];
-        lignesFlexo = new Ligne[compterLignes("FLEXO", lignes)];
-        lignesProximo = new Ligne[compterLignes("PROXIMO", lignes)];
+        lignesChrono= new ArrayList<Ligne>();
+        lignesFlexo = new ArrayList<Ligne>();
+        lignesProximo = new ArrayList<Ligne>();
 
-        int indexLignesTram = 0;
         int indexLignesChrono = 0;
         int indexLignesFlexo = 0;
         int indexLignesProximo = 0;
         for(int i = 0; i< lignes.length; i++) {
             try {
                 if(lignes[i].getString("type").contains("TRAM")) {
-                    shortNamesLignes[indexLignesTram] = lignes[i].getString("shortName");
                     lignesTram.add(new Ligne(lignes[i]));
-                    indexLignesTram++;
                 }
                 else if(lignes[i].getString("type").contains("CHRONO")) {
-                    shortNamesLignesChrono[indexLignesChrono] = lignes[i].getString("shortName");
-                    lignesChrono[indexLignesChrono] = new Ligne(lignes[i]);
-                    indexLignesChrono++;
+                    lignesChrono.add(new Ligne(lignes[i]));
                 }
                 else if(lignes[i].getString("type").contains("FLEXO")) {
-                    shortNamesLignesFlexo[indexLignesFlexo] = lignes[i].getString("shortName");
-                    lignesFlexo[indexLignesFlexo] = new Ligne(lignes[i]);
-                    indexLignesFlexo++;
+                    lignesFlexo.add(new Ligne(lignes[i]));
                 }
                 else if(lignes[i].getString("type").contains("PROXIMO")) {
-                    shortNamesLignesProximo[indexLignesProximo] = lignes[i].getString("shortName");
-                    lignesProximo[indexLignesProximo] = new Ligne(lignes[i]);
-                    indexLignesProximo++;
+                    lignesProximo.add(new Ligne(lignes[i]));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
 
-        lignesTram.sort(new Comparator<Ligne>() {
-            @Override
-            public int compare(Ligne ligne, Ligne t1) {
-                return ligne.getShortName().compareTo(t1.getShortName());
-            }
+        if (Build.VERSION.SDK_INT>23)
+        {
+            lignesTram.sort(new Comparator<Ligne>() {
+                @Override
+                public int compare(Ligne ligne, Ligne t1) {
+                    return ligne.getShortName().compareTo(t1.getShortName());
+                }
+
         }) ;
-        for(int i = 0; i< indexLignesTram; i++) {
+            lignesChrono.sort(new Comparator<Ligne>() {
+                @Override
+                public int compare(Ligne ligne, Ligne t1) {
+                    return ligne.getShortName().compareTo(t1.getShortName());
+                }
+
+            }) ;
+            lignesFlexo.sort(new Comparator<Ligne>() {
+                @Override
+                public int compare(Ligne ligne, Ligne t1) {
+                    return ligne.getShortName().compareTo(t1.getShortName());
+                }
+
+            }) ;
+            lignesProximo.sort(new Comparator<Ligne>() {
+                @Override
+                public int compare(Ligne ligne, Ligne t1) {
+                    return ligne.getShortName().compareTo(t1.getShortName());
+                }
+
+            }) ;
+
+
+        }
+        for(int i = 0; i< lignesTram.size(); i++) {
             /*int buttonStyle = R.style.Widget_AppCompat_Button;
             Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
             Button bt = new Button(this);
@@ -127,6 +136,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
             bt.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.buttoncircle));
             GradientDrawable backgroundGradient = (GradientDrawable)bt.getBackground();
             backgroundGradient.setColor(Color.parseColor("#"+lignesTram.get(i).getColor()));
+
             final int finalI = i;
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,45 +146,72 @@ public class ChoixLigneActivity extends AppCompatActivity {
                     startActivity(choixArret);
                 }
             });
-            //bt.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-System.out.println(i%5);
-            TabTram.get(0).addView(bt);
+            linTram.addView(bt);
         }
 
-        for(int i = 0; i< indexLignesChrono; i++) {
-            /*int buttonStyle = R.style.Widget_AppCompat_ImageButton;
+        for(int i = 0; i< lignesChrono.size(); i++) {
+            /*int buttonStyle = R.style.Widget_AppCompat_Button;
             Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
             Button bt = new Button(this);
-            bt.setText(lignesChrono[i].getShortName());
-            bt.setBackgroundColor(Color.parseColor("#"+lignesChrono[i].getColor()));
+            bt.setText(lignesChrono.get(i).getShortName());
+            bt.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.buttoncircle));
+            GradientDrawable backgroundGradient = (GradientDrawable)bt.getBackground();
+            backgroundGradient.setColor(Color.parseColor("#"+lignesChrono.get(i).getColor()));
+
             final int finalI = i;
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                    choixArret.putExtra("LIGNE", lignesChrono[finalI].getTableau());
+                    choixArret.putExtra("LIGNE", lignesChrono.get(finalI).getTableau());
                     startActivity(choixArret);
                 }
             });
             linchrono.addView(bt);
         }
 
-        for(int i = 0; i< indexLignesProximo; i++) {
-            /*int buttonStyle = R.style.Widget_AppCompat_ImageButton;
+        for(int i = 0; i< lignesProximo.size(); i++) {
+            /*int buttonStyle = R.style.Widget_AppCompat_Button;
             Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
             Button bt = new Button(this);
-            bt.setText(lignesProximo[i].getShortName());
-            bt.setBackgroundColor(Color.parseColor("#"+lignesProximo[i].getColor()));
+            bt.setText(lignesProximo.get(i).getShortName());
+            bt.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.buttoncircle));
+            GradientDrawable backgroundGradient = (GradientDrawable)bt.getBackground();
+            backgroundGradient.setColor(Color.parseColor("#"+lignesProximo.get(i).getColor()));
+
             final int finalI = i;
             bt.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
-                    choixArret.putExtra("LIGNE", lignesProximo[finalI].getTableau());
+                    choixArret.putExtra("LIGNE", lignesProximo.get(finalI).getTableau());
                     startActivity(choixArret);
                 }
             });
             linProximo.addView(bt);
+        }
+
+        for(int i = 0; i< lignesFlexo.size(); i++) {
+            /*int buttonStyle = R.style.Widget_AppCompat_Button;
+            Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
+            Button bt = new Button(this);
+            bt.setText(lignesFlexo.get(i).getShortName());
+            bt.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.buttoncircle));
+            GradientDrawable backgroundGradient = (GradientDrawable)bt.getBackground();
+            backgroundGradient.setColor(Color.parseColor("#"+lignesFlexo.get(i).getColor()));
+
+            final int finalI = i;
+            bt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent choixArret = new Intent(ChoixLigneActivity.this, ChoixArretActivity.class);
+                    choixArret.putExtra("LIGNE", lignesFlexo.get(finalI).getTableau());
+                    startActivity(choixArret);
+                }
+            });
+            //bt.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+            System.out.println(i%5);
+            linFlexo.addView(bt);
         }
 
     }
