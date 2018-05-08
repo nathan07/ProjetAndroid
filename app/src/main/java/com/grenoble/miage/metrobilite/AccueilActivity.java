@@ -31,5 +31,13 @@ public class AccueilActivity extends AppCompatActivity {
                 startActivity(choixLigne);
             }
         });
+
+        favoris.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent fav = new Intent(AccueilActivity.this, FavorisActivity.class);
+                startActivity(fav);
+            }
+        });
     }
 }

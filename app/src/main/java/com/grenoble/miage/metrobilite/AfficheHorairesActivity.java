@@ -1,6 +1,8 @@
 package com.grenoble.miage.metrobilite;
 
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.Switch;
@@ -9,6 +11,8 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -23,6 +27,9 @@ public class AfficheHorairesActivity extends AppCompatActivity {
     private int direction = 1;
     private Arret arret = null;
     private String ligneId = null;
+    private int hours = 0;
+    private int minutes = 0;
+    private static int NOTIFICATION_ID = 1;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +85,21 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         timer.schedule(timerTask, 0, 30000);
     }
 
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        Date currentTime = Calendar.getInstance().getTime();
+        if(!hasFocus && hours == currentTime.getHours() && minutes-currentTime.getMinutes() < 5) {
+            final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(AfficheHorairesActivity.this)
+                    .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                    .setContentTitle("Ligne : "+ligne.getText()+", Arret : "+arret.getName())
+                    .setContentText("Heure de passage : "+hours+"h"+minutes)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(AfficheHorairesActivity.this);
+            notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        }
+    }
+
     private void rafraichirAffichage() {
         try {
             int indicePattern = 0;
@@ -89,8 +111,8 @@ public class AfficheHorairesActivity extends AppCompatActivity {
             arretChoisi.setText(arret.getName());
             String nextArrival = horaires[indicePattern].getJSONArray("times").getJSONObject(0).getString("scheduledArrival");
             int nextArrivalInt = Integer.parseInt(nextArrival);
-            int hours = nextArrivalInt / 3600;
-            int minutes = (nextArrivalInt % 3600) / 60;
+            hours = nextArrivalInt / 3600;
+            minutes = (nextArrivalInt % 3600) / 60;
             if(minutes < 10) {
                 nextArrival = hours +"h0"+ minutes;
             }
@@ -98,6 +120,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
                 nextArrival = hours +"h"+ minutes;
             }
             hor.setText(nextArrival);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
