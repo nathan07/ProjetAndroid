@@ -1,5 +1,7 @@
 package com.grenoble.miage.metrobilite;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -78,6 +80,9 @@ public class AfficheHorairesActivity extends AppCompatActivity {
                     public void run() {
                         recupererHoraires(dataCollector, link);
                         rafraichirAffichage();
+                        if(!hasWindowFocus()) {
+                            afficherNotification();
+                        }
                     }
                 });
             }
@@ -85,15 +90,21 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         timer.schedule(timerTask, 0, 30000);
     }
 
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
+    private void afficherNotification() {
         Date currentTime = Calendar.getInstance().getTime();
-        if(!hasFocus && hours == currentTime.getHours() && minutes-currentTime.getMinutes() < 5) {
+        if(hours == currentTime.getHours() && minutes-currentTime.getMinutes() <= 5) {
+            // Create an explicit intent for an Activity in your app
+            Intent intent = new Intent(this, FavorisActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
             final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(AfficheHorairesActivity.this)
                     .setSmallIcon(android.R.drawable.sym_def_app_icon)
                     .setContentTitle("Ligne : "+ligne.getText()+", Arret : "+arret.getName())
                     .setContentText("Heure de passage : "+hours+"h"+minutes)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    // Set the intent that will fire when the user taps the notification
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true);
 
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(AfficheHorairesActivity.this);
             notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
