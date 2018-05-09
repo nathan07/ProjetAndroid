@@ -6,13 +6,20 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import com.grenoble.miage.metrobilite.Persistence.DAOBase;
+import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
+import com.grenoble.miage.metrobilite.Persistence.StockageFavoris;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
@@ -26,12 +33,14 @@ public class AfficheHorairesActivity extends AppCompatActivity {
     private TextView destination;
     private TextView arretChoisi;
     private Switch choixDirection;
+    private ImageButton favoris;
     private int direction = 1;
     private Arret arret = null;
     private String ligneId = null;
     private int hours = 0;
     private int minutes = 0;
     private static int NOTIFICATION_ID = 1;
+    private Favori infoFav;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +63,8 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         destination = (TextView) findViewById(R.id.rappelDestination);
         arretChoisi = (TextView) findViewById(R.id.rappelArret);
         choixDirection = (Switch) findViewById(R.id.choixDirection);
+        favoris = (ImageButton) findViewById(R.id.fav);
+
 
         choixDirection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -88,6 +99,17 @@ public class AfficheHorairesActivity extends AppCompatActivity {
             }
         };
         timer.schedule(timerTask, 0, 30000);
+
+        favoris.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //new StockageFavoris().add(AfficheHorairesActivity.this,infoFav);
+                DAOFavori dbase = DAOFavori.getDAOFavori(AfficheHorairesActivity.this);
+                dbase.open();
+                dbase.ajouter(infoFav);
+                System.out.println("Heeeeeeeeeeeeeeeeeeeeeeeeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+            }
+        });
     }
 
     private void afficherNotification() {
@@ -131,6 +153,9 @@ public class AfficheHorairesActivity extends AppCompatActivity {
                 nextArrival = hours +"h"+ minutes;
             }
             hor.setText(nextArrival);
+
+            infoFav= new Favori(this.ligneId,horaires[indicePattern].getJSONObject("pattern").getString("id"),arret.getName(),horaires[indicePattern].getJSONObject("pattern").getString("desc"));
+
 
         } catch (JSONException e) {
             e.printStackTrace();

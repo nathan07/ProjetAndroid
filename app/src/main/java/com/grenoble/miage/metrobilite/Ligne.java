@@ -3,6 +3,8 @@ package com.grenoble.miage.metrobilite;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by prinsacn on 11/04/18.
  */
@@ -39,6 +41,7 @@ public class Ligne {
             this.textColor = ligne[4];
             this.mode = ligne[5];
             this.type = ligne[6];
+
     }
 
     public String getType() {
@@ -78,6 +81,7 @@ public class Ligne {
         tab[4] = this.getTextColor();
         tab[5] = this.getMode();
         tab[6] = this.getType();
+
         return tab;
     }
 }

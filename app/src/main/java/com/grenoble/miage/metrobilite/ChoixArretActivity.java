@@ -28,8 +28,7 @@ public class ChoixArretActivity extends AppCompatActivity {
         final Ligne ligne = new Ligne(extras.getStringArray("LIGNE"));
 
 
-
-        String link = "https://data.metromobilite.fr/api/routers/default/index/routes/"+ligne.getId()+"/clusters";
+        String link = "https://data.metromobilite.fr/api/routers/default/index/routes/" + ligne.getId() + "/clusters";
 
 
         final DataCollector dataCollector = new DataCollector();
@@ -43,33 +42,40 @@ public class ChoixArretActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        choixArrets = (ListView) findViewById(R.id.listeArrets);
-        final String[] namesArrets = new String[arrets.length];
+        if (arrets != null && arrets.length != 0) {
+            choixArrets = (ListView) findViewById(R.id.listeArrets);
+            final String[] namesArrets = new String[arrets.length];
 
-        arretTab = new Arret[arrets.length];
-        for(int i = 0; i < arrets.length;i++) {
-            arretTab[i] = new Arret(arrets[i]);
-        }
-
-        for(int i = 0;i<arrets.length;i++) {
-            namesArrets[i] = arretTab[i].getName();
-        }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChoixArretActivity.this,
-                android.R.layout.simple_list_item_1, namesArrets);
-        choixArrets.setAdapter(adapter);
-
-        choixArrets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent horaires = new Intent(ChoixArretActivity.this, AfficheHorairesActivity.class);
-                String[] extra = new String[arretTab[i].getTableau().length+1];
-                for(int y = 0;y<arretTab[i].getTableau().length;y++) {
-                    extra[y] = arretTab[i].getTableau()[y];
-                }
-                extra[arretTab[i].getTableau().length] = ligne.getId();
-                horaires.putExtra("ARRET", extra);
-                startActivity(horaires);
+            arretTab = new Arret[arrets.length];
+            for (int i = 0; i < arrets.length; i++) {
+                arretTab[i] = new Arret(arrets[i]);
             }
-        });
+
+            for (int i = 0; i < arrets.length; i++) {
+                namesArrets[i] = arretTab[i].getName();
+            }
+            final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChoixArretActivity.this,
+                    android.R.layout.simple_list_item_1, namesArrets);
+            choixArrets.setAdapter(adapter);
+
+            choixArrets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent horaires = new Intent(ChoixArretActivity.this, AfficheHorairesActivity.class);
+                    String[] extra = new String[arretTab[i].getTableau().length + 1];
+                    for (int y = 0; y < arretTab[i].getTableau().length; y++) {
+                        extra[y] = arretTab[i].getTableau()[y];
+                    }
+                    extra[arretTab[i].getTableau().length] = ligne.getId();
+                    horaires.putExtra("ARRET", extra);
+                    startActivity(horaires);
+                }
+            });
+        }
+        else
+        {
+            setContentView(R.layout.erreur_recup_donnee);
+        }
     }
+
 }
