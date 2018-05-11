@@ -45,7 +45,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choix_ligne);
+        setContentView(R.layout.chargement_spinner);
 
         final DataCollector dataCollector = new DataCollector();
         try {
@@ -59,12 +59,7 @@ public class ChoixLigneActivity extends AppCompatActivity {
         }
 
         if (lignes!=null && lignes.length != 0) {
-            //recup
-            GridLayout linTram = (GridLayout) findViewById(R.id.trameLayout);
 
-            GridLayout linchrono = (GridLayout) findViewById(R.id.chronoLayout);
-            GridLayout linProximo = (GridLayout) findViewById(R.id.proximoLayout);
-            GridLayout linFlexo = (GridLayout) findViewById(R.id.flexoLayout);
 
 
             //lignesTram = new JSONObject[compterLignes("TRAM", lignes)];
@@ -124,6 +119,14 @@ public class ChoixLigneActivity extends AppCompatActivity {
 
 
             }
+            setContentView(R.layout.activity_choix_ligne);
+
+            //recup
+            GridLayout linTram = (GridLayout) findViewById(R.id.trameLayout);
+            GridLayout linchrono = (GridLayout) findViewById(R.id.chronoLayout);
+            GridLayout linProximo = (GridLayout) findViewById(R.id.proximoLayout);
+            GridLayout linFlexo = (GridLayout) findViewById(R.id.flexoLayout);
+
             addbuttonArret(linTram,lignesTram);
 
             addbuttonArret(linchrono,lignesChrono);

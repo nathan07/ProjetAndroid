@@ -86,4 +86,16 @@ public class DAOFavori extends DAOBase {
         return f;
 
     }
+
+    public boolean ifExiste(Favori f) {
+        this.open();
+        Cursor c = mDb.rawQuery("select * from " + FAVORI_TABLE_NAME + " where IdLigne = ? And NomLigne = ? AND NomArret = ? AND Destination = ?", new String[]{f.getIdLigne(), f.getNomLigne(), f.getNomArret(), f.getDestination()});
+        while(c.moveToNext())
+        {
+            if (f.getIdLigne() != c.getString(1) && f.getNomLigne() != c.getString(2) && f.getNomArret() != c.getString(3) && f.getDestination() != c.getString(4)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

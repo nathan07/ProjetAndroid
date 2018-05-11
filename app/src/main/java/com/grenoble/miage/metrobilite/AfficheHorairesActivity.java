@@ -1,6 +1,7 @@
 package com.grenoble.miage.metrobilite;
 
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
@@ -11,6 +12,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.grenoble.miage.metrobilite.Persistence.DAOBase;
 import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
@@ -105,9 +107,18 @@ public class AfficheHorairesActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //new StockageFavoris().add(AfficheHorairesActivity.this,infoFav);
                 DAOFavori dbase = DAOFavori.getDAOFavori(AfficheHorairesActivity.this);
-                dbase.open();
-                dbase.ajouter(infoFav);
-                System.out.println("Heeeeeeeeeeeeeeeeeeeeeeeeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                if(dbase.ifExiste(infoFav)==false) {
+                    dbase.ajouter(infoFav);
+                    System.out.println("Heeeeeeeeeeeeeeeeeeeeeeeeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu");
+                }
+                else{
+                    Context context = getApplicationContext();
+                    CharSequence text = "Déja ajouté aux favoris!";
+                    int duration = Toast.LENGTH_SHORT;
+
+                    Toast toast = Toast.makeText(context, text, duration);
+                    toast.show();
+                }
             }
         });
     }
