@@ -6,6 +6,8 @@ import android.database.Cursor;
 
 import com.grenoble.miage.metrobilite.Favori;
 
+import java.util.ArrayList;
+
 public class DAOFavori extends DAOBase {
 
     public static final String FAVORI_KEY = "id";
@@ -76,14 +78,16 @@ public class DAOFavori extends DAOBase {
         return f;
     }
 
-    public Favori selectionnerTous() {
+    public ArrayList<Favori> selectionnerTous() {
+        ArrayList<Favori> ArrayFavori= new ArrayList<Favori>();
         this.open();
         Cursor c =  this.mDb.query(FAVORI_TABLE_NAME,null,null,null,null,null,null);
-        c.moveToFirst();
-        Favori f=new Favori(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4));
+        while(c.moveToNext()) {
+            ArrayFavori.add(new Favori(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4)));
+        }
         c.close();
         this.close();
-        return f;
+        return ArrayFavori;
 
     }
 
