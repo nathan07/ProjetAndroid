@@ -43,10 +43,10 @@ public class FavorisActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AlertDialog.Builder adb=new AlertDialog.Builder(FavorisActivity.this);
-                adb.setTitle("Delete?");
-                adb.setMessage("Are you sure you want to delete " + i);
+                adb.setTitle("Supprimer Favori?");
+                adb.setMessage("Etes vous sur de vouloir supprimer ce favori");
                 final int positionToRemove = i;
-                adb.setNegativeButton("Cancel", null);
+                adb.setNegativeButton("Annuler", null);
                 adb.setPositiveButton("Ok", new AlertDialog.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Favori f = finalFavoris.remove(positionToRemove);
