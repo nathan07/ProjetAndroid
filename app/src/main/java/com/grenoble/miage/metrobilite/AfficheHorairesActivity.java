@@ -14,14 +14,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.grenoble.miage.metrobilite.Persistence.DAOBase;
 import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
-import com.grenoble.miage.metrobilite.Persistence.StockageFavoris;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;

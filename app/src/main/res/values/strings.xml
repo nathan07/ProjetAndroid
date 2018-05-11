@@ -17,4 +17,7 @@
     <string name="erreur">Une erreur dans la récupération des données a été détecté. Veuillez résseayer ulterieurement</string>
     <string name="choisissez_votre_arr_t">Choisissez votre arrêt</string>
     <string name="prochain_passage">Prochain passage à :</string>
+    <string name="favoris">Favoris</string>
+    <string name="appuyer_sur_le_favori_pour_le_supprimer">appuyer sur le favori pour le supprimer</string>
+    <string name="arret">Arret :</string>
 </resources>

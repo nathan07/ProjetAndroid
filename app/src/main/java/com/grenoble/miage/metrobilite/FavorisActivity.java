@@ -6,11 +6,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
-import com.grenoble.miage.metrobilite.Persistence.StockageFavoris;
 
 import java.util.ArrayList;
 
@@ -58,7 +56,6 @@ public class FavorisActivity extends AppCompatActivity {
             }
         });
 
-       // System.out.println(f.getNomArret());
     }
 
 }
