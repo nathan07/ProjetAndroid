@@ -25,6 +25,8 @@ public class Favori {
         this.destination=dest;
     }
 
+    public int getId() { return this.id;}
+
     public String getIdLigne() {
         return idLigne;
     }
