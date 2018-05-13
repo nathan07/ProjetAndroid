@@ -91,7 +91,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
                         recupererHoraires(dataCollector, link);
                         rafraichirAffichage();
                         if(!hasWindowFocus()) {
-                            afficherNotification();
+                            //afficherNotification();
                         }
                     }
                 });
@@ -162,7 +162,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
             }
             hor.setText(nextArrival);
 
-            infoFav= new Favori(this.ligneId,horaires[indicePattern].getJSONObject("pattern").getString("id"),arret.getName(),horaires[indicePattern].getJSONObject("pattern").getString("desc"));
+            infoFav= new Favori(this.ligneId,horaires[indicePattern].getJSONObject("pattern").getString("id"),arret.getCode(), arret.getName(),horaires[indicePattern].getJSONObject("pattern").getString("desc"), direction);
 
 
         } catch (JSONException e) {

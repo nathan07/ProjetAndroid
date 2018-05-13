@@ -11,8 +11,10 @@ public class StockageBD extends SQLiteOpenHelper {
     public static final String FAVORI_KEY = "id";
     public static final String FAVORI_IDLIGNE = "IdLigne";
     public static final String FAVORI_NOMLIGNE = "NomLigne";
+    public static final String FAVORI_CODEARRET = "CodeArret";
     public static final String FAVORI_NOMARRET = "NomArret";
     public static final String FAVORI_DESTINATION = "Destination";
+    public static final String FAVORI_DIRECTION = "Direction";
 
     public static final String FAVORI_TABLE_NAME = "FAVORI";
     public static final int DATABASE_VERSION =1;
@@ -24,8 +26,10 @@ public class StockageBD extends SQLiteOpenHelper {
                     FAVORI_KEY + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     FAVORI_IDLIGNE + " TEXT, " +
                     FAVORI_NOMLIGNE + " TEXT, " +
+                    FAVORI_CODEARRET + " TEXT, " +
                     FAVORI_NOMARRET + " TEXT, " +
-                    FAVORI_DESTINATION + " TEXT);";
+                    FAVORI_DESTINATION + " TEXT, " +
+                    FAVORI_DIRECTION + " TEXT);";
 
 
 
