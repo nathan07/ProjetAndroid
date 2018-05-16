@@ -8,6 +8,9 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -29,28 +32,36 @@ import java.util.TimerTask;
 
 public class FavorisActivity extends AppCompatActivity {
 
-    private ListView FavListView;
+    private RecyclerView FavListView;
     private static int NOTIFICATION_ID = 1;
     private JSONObject[] horaires;
+    private ArrayList<Favori> favoris;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favoris);
 
-        FavListView = (ListView) findViewById(R.id.listFavori);
+        FavListView = (RecyclerView) findViewById(R.id.listFavori);
 
         final DAOFavori dbase = DAOFavori.getDAOFavori(FavorisActivity.this);
 
-        ArrayList<Favori> favoris = new ArrayList<Favori>();
+        favoris = new ArrayList<Favori>();
 
         favoris = dbase.selectionnerTous();
 
-        final FavoriAdapter adapter = new FavoriAdapter(FavorisActivity.this, favoris);
+        FavoriAdapter adapter = new FavoriAdapter(favoris);
+
+        RecyclerView.LayoutManager mLayoutManager= new LinearLayoutManager(getApplicationContext());
+
+        FavListView.setLayoutManager(mLayoutManager);
+        FavListView.setItemAnimator(new DefaultItemAnimator());
+
+
         FavListView.setAdapter(adapter);
 
         final ArrayList<Favori> finalFavoris = favoris;
 
-        FavListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        /*FavListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AlertDialog.Builder adb=new AlertDialog.Builder(FavorisActivity.this);
@@ -67,9 +78,9 @@ public class FavorisActivity extends AppCompatActivity {
                     }});
                 adb.show();
             }
-        });
+        });*/
 
-        Timer timer = new Timer();
+       /* Timer timer = new Timer();
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -80,16 +91,18 @@ public class FavorisActivity extends AppCompatActivity {
                             String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+f.getCodeArret()+"/stoptimes";
                             DataCollector dataCollector = new DataCollector();
                             recupererHoraires(dataCollector, link);
-                            int test = rafraichirAffichage(f);
-                            int hours = test / 3600;
-                            int minutes = (test % 3600) / 60;
-                            afficherNotification(f, hours, minutes);
+                            if (horaires!=null || horaires.length!=0) {
+                                int test = rafraichirAffichage(f);
+                                int hours = test / 3600;
+                                int minutes = (test % 3600) / 60;
+                                afficherNotification(f, hours, minutes);
+                            }
                         }
                     }
                 });
             }
         };
-        timer.schedule(timerTask, 0, 5000);
+        timer.schedule(timerTask, 0, 5000);*/
     }
 
     private void afficherNotification(Favori f, int hours, int minutes) {
