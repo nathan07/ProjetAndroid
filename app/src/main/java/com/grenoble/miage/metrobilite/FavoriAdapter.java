@@ -14,7 +14,6 @@ import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
 
 import java.util.List;
 
-import static android.R.attr.direction;
 
 public class FavoriAdapter extends RecyclerView.Adapter<FavoriAdapter.FavoriViewHolder> {
 
