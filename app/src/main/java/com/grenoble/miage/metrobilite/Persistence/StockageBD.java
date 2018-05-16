@@ -29,7 +29,7 @@ public class StockageBD extends SQLiteOpenHelper {
                     FAVORI_CODEARRET + " TEXT, " +
                     FAVORI_NOMARRET + " TEXT, " +
                     FAVORI_DESTINATION + " TEXT, " +
-                    FAVORI_DIRECTION + " TEXT);";
+                    FAVORI_DIRECTION + " INTEGER);";
 
 
 

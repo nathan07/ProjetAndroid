@@ -16,7 +16,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/appuyer_sur_le_favori_pour_le_supprimer"
+        android:text="@string/faite_glisser_le_favori_pour_le_supprimer"
         android:textStyle="bold" />
 
     <android.support.v7.widget.RecyclerView

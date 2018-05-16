@@ -100,7 +100,7 @@ public class DAOFavori extends DAOBase {
         Cursor c = mDb.rawQuery("select * from " + FAVORI_TABLE_NAME + " where IdLigne = ? And NomLigne = ? AND CodeArret = ? AND NomArret = ? AND Destination = ? AND Direction = ?", new String[]{f.getIdLigne(), f.getNomLigne(), f.getCodeArret(), f.getNomArret(), f.getDestination(), String.valueOf(f.getDirection())});
         while(c.moveToNext())
         {
-            if (f.getIdLigne() == c.getString(1) && f.getNomLigne() == c.getString(2) && f.getCodeArret() == c.getString(3) && f.getNomArret() == c.getString(4) && f.getDestination() == c.getString(5) && f.getDirection() == c.getInt(6)) {
+            if (f.getIdLigne().equals(c.getString(1)) && f.getNomLigne().equals(c.getString(2)) && f.getCodeArret().equals(c.getString(3)) && f.getNomArret().equals(c.getString(4)) && f.getDestination().equals(c.getString(5)) && f.getDirection() == c.getInt(6)) {
                 return true;
             }
         }

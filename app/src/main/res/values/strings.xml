@@ -18,6 +18,6 @@
     <string name="choisissez_votre_arr_t">Choisissez votre arrêt</string>
     <string name="prochain_passage">Prochain passage à :</string>
     <string name="favoris">Favoris</string>
-    <string name="appuyer_sur_le_favori_pour_le_supprimer">appuyer sur le favori pour le supprimer</string>
     <string name="arret">Arret :</string>
+    <string name="faite_glisser_le_favori_pour_le_supprimer">Faite glisser le favori pour le supprimer</string>
 </resources>
