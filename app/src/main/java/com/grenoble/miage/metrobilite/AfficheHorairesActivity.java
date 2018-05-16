@@ -45,7 +45,7 @@ public class AfficheHorairesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_affiche_horaires);
         Bundle extras = getIntent().getExtras();
-        System.out.println("recupere : "+extras.getStringArray("ARRET")[5]);
+        //System.out.println("recupere : "+extras.getStringArray("ARRET")[5]);
         ligneId = extras.getStringArray("ARRET")[5];
         String[] paramsArret = new String[extras.getStringArray("ARRET").length-1];
         for(int i = 0;i<extras.getStringArray("ARRET").length-1;i++) {

@@ -11,6 +11,7 @@ public class Favori {
     private String nomArret;
     private String destination;
     private int direction;
+    private int notifActive;
 
     private JSONObject[] horaires;
 
@@ -24,6 +25,7 @@ public class Favori {
         this.destination=dest;
         this.direction=dir;
         this.horaires = null;
+        this.notifActive = 0;
     }
 
     public Favori(String idLigne, String nomLigne, String codeArret, String nomArret, String dest, int dir) {
@@ -35,6 +37,7 @@ public class Favori {
         this.destination=dest;
         this.direction=dir;
         this.horaires = null;
+        this.notifActive = 0;
     }
 
     public int getId() { return this.id;}
@@ -67,5 +70,11 @@ public class Favori {
         return direction;
     }
 
+    public int getNotifActive() {
+        return notifActive;
+    }
+
     public void setHoraires(JSONObject[] h) { this.horaires = h; }
+
+    public void setNotifActive(int b) { this.notifActive = b; }
 }

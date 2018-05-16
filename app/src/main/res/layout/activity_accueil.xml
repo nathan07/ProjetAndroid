@@ -14,25 +14,33 @@
 
     <Button
         android:id="@+id/horaires_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:background="@drawable/test_elevation"
         android:text="@string/horaires_button_name" />
 
     <Button
         android:id="@+id/geolocalisation_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:background="@drawable/test_elevation"
         android:text="@string/geolocalisation_button_name" />
 
     <Button
         android:id="@+id/favoris_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:background="@drawable/test_elevation"
         android:text="@string/favoris_button_name" />
 
     <Button
         android:id="@+id/about_button"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:elevation="3dp"
+        android:background="@drawable/test_elevation"
         android:text="@string/about_button_name" />
 </LinearLayout>

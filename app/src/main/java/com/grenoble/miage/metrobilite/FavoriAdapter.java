@@ -1,50 +1,94 @@
 package com.grenoble.miage.metrobilite;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
+
+import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
 
 import java.util.List;
 
-public class FavoriAdapter extends ArrayAdapter<Favori> {
-    //tweets est la liste des models à afficher
-    public FavoriAdapter(Context context, List<Favori> Favoris) {
-        super(context, 0, Favoris);
+import static android.R.attr.direction;
+
+public class FavoriAdapter extends RecyclerView.Adapter<FavoriAdapter.FavoriViewHolder> {
+
+    private List<Favori> favs;
+    private Context context;
+
+    public FavoriAdapter (List<Favori>fav, Context context)
+    {
+        this.favs=fav;
+        this.context=context;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public FavoriViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.view_favori,parent, false);
-        }
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
 
-        FavoriViewHolder viewHolder = (FavoriViewHolder) convertView.getTag();
-        if(viewHolder == null){
-            viewHolder = new FavoriViewHolder();
-            viewHolder.nameLigne = (TextView) convertView.findViewById(R.id.ligneFavoriName);
-            viewHolder.nameArret = (TextView) convertView.findViewById(R.id.arretFavoriName);
-            viewHolder.destination = (TextView) convertView.findViewById(R.id.destinationFavoriName);
-            convertView.setTag(viewHolder);
-        }
+        View view = inflater.inflate(R.layout.view_favori, parent, false);
 
-        //getItem(position) va récupérer l'item [position] de la List<Tweet> tweets
-        Favori favori = getItem(position);
+        return new FavoriViewHolder(view);
 
-        //il ne reste plus qu'à remplir notre vue
-        viewHolder.nameLigne.setText(favori.getNomLigne());
-        viewHolder.nameArret.setText(favori.getNomArret());
-        viewHolder.destination.setText(favori.getDestination());
-
-        return convertView;
     }
 
-    private class FavoriViewHolder {
+    @Override
+    public void onBindViewHolder(FavoriViewHolder holder, final int position) {
+        holder.nameLigne.setText(favs.get(position).getNomLigne());
+        holder.nameArret.setText(favs.get(position).getNomArret());
+        holder.destination.setText(favs.get(position).getDestination());
+        //holder.notif.setChecked(Boolean.getBoolean(String.valueOf(favs.get(position).getNotifActive())));
+        if(favs.get(position).getNotifActive()==1) {
+            holder.notif.setChecked(true);
+        }
+        else {
+            holder.notif.setChecked(false);
+        }
+
+        holder.notif.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                int notify;
+                if(b) {
+                    notify = 1;
+                }
+                else {
+                    notify = 0;
+                }
+                DAOFavori dbase = DAOFavori.getDAOFavori(context);
+                favs.get(position).setNotifActive(notify);
+                dbase.modifier(favs.get(position),favs.get(position).getId());
+
+            }
+        });
+
+    }
+
+    @Override
+    public int getItemCount() {
+        return favs.size();
+    }
+
+
+    public class FavoriViewHolder extends  RecyclerView.ViewHolder{
         public TextView nameLigne;
         public TextView nameArret;
         public TextView destination;
+        public Switch notif;
+
+        public FavoriViewHolder(View itemView) {
+            super(itemView);
+            nameLigne = (TextView) itemView.findViewById(R.id.ligneFavoriName);
+            nameArret = (TextView) itemView.findViewById(R.id.arretFavoriName);
+            destination = (TextView) itemView.findViewById(R.id.destinationFavoriName);
+            notif= (Switch) itemView.findViewById(R.id.activeNotif);
+        }
+
     }
 }

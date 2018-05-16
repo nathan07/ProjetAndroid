@@ -15,6 +15,7 @@ public class StockageBD extends SQLiteOpenHelper {
     public static final String FAVORI_NOMARRET = "NomArret";
     public static final String FAVORI_DESTINATION = "Destination";
     public static final String FAVORI_DIRECTION = "Direction";
+    public static final String FAVORI_NOTIF_ACTIVE = "Notif";
 
     public static final String FAVORI_TABLE_NAME = "FAVORI";
     public static final int DATABASE_VERSION =1;
@@ -29,7 +30,8 @@ public class StockageBD extends SQLiteOpenHelper {
                     FAVORI_CODEARRET + " TEXT, " +
                     FAVORI_NOMARRET + " TEXT, " +
                     FAVORI_DESTINATION + " TEXT, " +
-                    FAVORI_DIRECTION + " TEXT);";
+                    FAVORI_DIRECTION + " INTEGER, " +
+                    FAVORI_NOTIF_ACTIVE + " INTEGER);";
 
 
 

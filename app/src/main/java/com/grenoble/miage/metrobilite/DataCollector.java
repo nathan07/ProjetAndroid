@@ -33,7 +33,7 @@ public class DataCollector {
 
         int responseCode = conn.getResponseCode();
 
-        System.out.println("response : "+conn.getResponseCode());
+       // System.out.println("response : "+conn.getResponseCode());
 
         InputStream inputStream = new BufferedInputStream(conn.getInputStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -48,7 +48,7 @@ public class DataCollector {
 
         try {
             JSONArray json = new JSONArray(result.toString());
-            System.out.println("json: "+json);
+          //  System.out.println("json: "+json);
             int nbLignesSemitag = compterLignesSemitag(json);
             lignes = new JSONObject[nbLignesSemitag];
             int indexLignes = 0;
@@ -94,7 +94,7 @@ public class DataCollector {
 
         int responseCode = conn.getResponseCode();
 
-        System.out.println("response : "+conn.getResponseCode());
+     //   System.out.println("response : "+conn.getResponseCode());
 
         InputStream inputStream = new BufferedInputStream(conn.getInputStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -109,7 +109,7 @@ public class DataCollector {
 
         try {
             JSONArray json = new JSONArray(result.toString());
-            System.out.println("json: "+json);
+     //       System.out.println("json: "+json);
             arrets = new JSONObject[json.length()];
             for(int i = 0;i<json.length();i++) {
                     arrets[i] = json.getJSONObject(i);

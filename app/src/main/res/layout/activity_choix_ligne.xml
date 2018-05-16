@@ -9,7 +9,7 @@
 
     <Button
         android:id="@+id/retour_button"
-        style="?attr/buttonStyle"
+        style="attr/buttonStyle"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:text="@string/retour_au_menu" />

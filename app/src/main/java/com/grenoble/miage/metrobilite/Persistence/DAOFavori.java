@@ -17,6 +17,7 @@ public class DAOFavori extends DAOBase {
     public static final String FAVORI_NOMARRET = "NomArret";
     public static final String FAVORI_DESTINATION = "Destination";
     public static final String FAVORI_DIRECTION = "Direction";
+    public static final String FAVORI_NOTIF_ACTIVE = "Notif";
 
     public static final String FAVORI_TABLE_NAME = "FAVORI";
 
@@ -49,6 +50,7 @@ public class DAOFavori extends DAOBase {
         value.put(FAVORI_NOMARRET, m.getNomArret());
         value.put(FAVORI_DESTINATION, m.getDestination());
         value.put(FAVORI_DIRECTION, m.getDirection());
+        value.put(FAVORI_NOTIF_ACTIVE, m.getNotifActive());
         this.mDb.insert(FAVORI_TABLE_NAME,null, value);
         this.close();
     }
@@ -65,7 +67,12 @@ public class DAOFavori extends DAOBase {
     /**
      * @param m le métier modifié
      */
-    public void modifier(Favori m) {
+    public void modifier(Favori m, long id) {
+        this.open();
+        ContentValues value = new ContentValues();
+        value.put(FAVORI_NOTIF_ACTIVE, m.getNotifActive());
+        mDb.update(FAVORI_TABLE_NAME, value, FAVORI_KEY + " = ?", new String[] {String.valueOf(id)});
+        this.close();
     }
 
     /**
@@ -97,10 +104,10 @@ public class DAOFavori extends DAOBase {
 
     public boolean ifExiste(Favori f) {
         this.open();
-        Cursor c = mDb.rawQuery("select * from " + FAVORI_TABLE_NAME + " where IdLigne = ? And NomLigne = ? AND CodeArret = ? AND NomArret = ? AND Destination = ? AND Direction = ?", new String[]{f.getIdLigne(), f.getNomLigne(), f.getCodeArret(), f.getNomArret(), f.getDestination(), String.valueOf(f.getDirection())});
+        Cursor c = mDb.rawQuery("select * from " + FAVORI_TABLE_NAME + " where IdLigne = ? And NomLigne = ? AND CodeArret = ? AND NomArret = ? AND Destination = ? AND Direction = ? AND Notif = ?", new String[]{f.getIdLigne(), f.getNomLigne(), f.getCodeArret(), f.getNomArret(), f.getDestination(), String.valueOf(f.getDirection()), String.valueOf(f.getNotifActive())});
         while(c.moveToNext())
         {
-            if (f.getIdLigne() != c.getString(1) && f.getNomLigne() != c.getString(2) && f.getCodeArret() != c.getString(3) && f.getNomArret() != c.getString(4) && f.getDestination() != c.getString(5) && f.getDirection() != c.getInt(6)) {
+            if (f.getIdLigne().equals(c.getString(1)) && f.getNomLigne().equals(c.getString(2)) && f.getCodeArret().equals(c.getString(3)) && f.getNomArret().equals(c.getString(4)) && f.getDestination().equals(c.getString(5)) && f.getDirection() == c.getInt(6) && f.getNotifActive() == c.getInt(7)) {
                 return true;
             }
         }
