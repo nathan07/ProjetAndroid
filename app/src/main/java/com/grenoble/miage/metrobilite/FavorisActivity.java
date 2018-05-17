@@ -85,7 +85,7 @@ public class FavorisActivity extends AppCompatActivity {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                favoris = dbase.selectionnerTous();
+                //favoris = dbase.selectionnerTous();
                 for (Favori f: favoris) {
                     if(f.getNotifActive()==1) {
                         String link = "https://data.metromobilite.fr/api/routers/default/index/clusters/"+f.getCodeArret()+"/stoptimes";

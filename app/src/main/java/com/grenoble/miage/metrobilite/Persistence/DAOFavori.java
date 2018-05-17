@@ -71,7 +71,7 @@ public class DAOFavori extends DAOBase {
         this.open();
         ContentValues value = new ContentValues();
         value.put(FAVORI_NOTIF_ACTIVE, m.getNotifActive());
-        mDb.update(FAVORI_TABLE_NAME, value, FAVORI_KEY + " = ?", new String[] {String.valueOf(id)});
+        mDb.update(FAVORI_TABLE_NAME, value, FAVORI_KEY + " = "+id, null);
         this.close();
     }
 
@@ -82,7 +82,8 @@ public class DAOFavori extends DAOBase {
         this.open();
         Cursor c = mDb.rawQuery("select * from " + FAVORI_TABLE_NAME + " where id=?", new String[]{String.valueOf(id)});
         System.out.println(c.getCount());
-        Favori f=new Favori(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5),c.getInt(6));
+        c.moveToNext();
+        Favori f=new Favori(c.getInt(0),c.getString(1),c.getString(2),c.getString(3),c.getString(4),c.getString(5),c.getInt(6),c.getInt(7));
         c.close();
         this.close();
 
@@ -94,7 +95,7 @@ public class DAOFavori extends DAOBase {
         this.open();
         Cursor c =  this.mDb.query(FAVORI_TABLE_NAME,null,null,null,null,null,null);
         while(c.moveToNext()) {
-            ArrayFavori.add(new Favori(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4),c.getString(5),c.getInt(6)));
+            ArrayFavori.add(new Favori(c.getInt(0), c.getString(1), c.getString(2), c.getString(3), c.getString(4),c.getString(5),c.getInt(6),c.getInt(7)));
         }
         c.close();
         this.close();

@@ -63,7 +63,7 @@ public class FavoriAdapter extends RecyclerView.Adapter<FavoriAdapter.FavoriView
                 DAOFavori dbase = DAOFavori.getDAOFavori(context);
                 favs.get(position).setNotifActive(notify);
                 dbase.modifier(favs.get(position),favs.get(position).getId());
-
+int test = dbase.selectionner(favs.get(position).getId()).getNotifActive();
             }
         });
 

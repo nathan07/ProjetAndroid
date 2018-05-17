@@ -16,7 +16,7 @@ public class Favori {
     private JSONObject[] horaires;
 
 
-    public Favori(int anInt, String idLigne, String nomLigne, String codeArret, String nomArret, String dest, int dir) {
+    public Favori(int anInt, String idLigne, String nomLigne, String codeArret, String nomArret, String dest, int dir, int notifActive) {
         this.id=anInt;
         this.idLigne=idLigne;
         this.nomLigne=nomLigne;
@@ -25,7 +25,7 @@ public class Favori {
         this.destination=dest;
         this.direction=dir;
         this.horaires = null;
-        this.notifActive = 0;
+        this.notifActive = notifActive;
     }
 
     public Favori(String idLigne, String nomLigne, String codeArret, String nomArret, String dest, int dir) {
@@ -37,7 +37,6 @@ public class Favori {
         this.destination=dest;
         this.direction=dir;
         this.horaires = null;
-        this.notifActive = 0;
     }
 
     public int getId() { return this.id;}
