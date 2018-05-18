@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/choix_de_la_direction"
-        android:textSize="30sp" />
+        android:textSize="24sp" />
 
     <View
         android:layout_width="fill_parent"
@@ -123,7 +123,9 @@
             android:layout_width="137dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ajoouter aux favoris" />
+            android:text="@string/ajouter_favori"
+            android:textColor="@android:color/background_dark"
+            android:textSize="24sp"/>
 
         <ImageButton
             android:id="@+id/fav"

@@ -1,22 +1,15 @@
 package com.grenoble.miage.metrobilite;
 
-import android.app.Notification;
 import android.app.PendingIntent;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Switch;
 
 import com.grenoble.miage.metrobilite.Persistence.DAOFavori;
 
@@ -107,27 +100,24 @@ public class FavorisActivity extends AppCompatActivity {
     private void afficherNotification(Favori f, int hours, int minutes) {
         Date currentTime = Calendar.getInstance().getTime();
         if (hours == currentTime.getHours() && minutes - currentTime.getMinutes() <= 5) {
-            // Create an explicit intent for an Activity in your app
-                        Intent intent = new Intent(this, FavorisActivity.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
-                        final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(FavorisActivity.this)
-                                        .setSmallIcon(android.R.drawable.sym_def_app_icon)
-                                        .setContentTitle("Ligne : "+f.getNomLigne()+", Arret : "+f.getNomArret())
-                                        .setContentText("Heure de passage : "+hours+"h"+minutes)
-                                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                                        // Set the intent that will fire when the user taps the notification
-                                        .setContentIntent(pendingIntent)
-                                        .setAutoCancel(true);
+            Intent intent = new Intent(this, FavorisActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+            final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(FavorisActivity.this)
+                            .setSmallIcon(android.R.drawable.sym_def_app_icon)
+                            .setContentTitle("Ligne : "+f.getNomLigne()+", Arret : "+f.getNomArret())
+                            .setContentText("Heure de passage : "+hours+"h"+minutes)
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setContentIntent(pendingIntent)
+                            .setAutoCancel(true);
 
-                        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(FavorisActivity.this);
-                        notificationManager.notify(f.getId(), mBuilder.build());
-
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(FavorisActivity.this);
+            notificationManager.notify(f.getId(), mBuilder.build());
         }
     }
 
 
-            private void recupererHoraires(DataCollector dataCollector, String link) {
+    private void recupererHoraires(DataCollector dataCollector, String link) {
         try {
             ThreadRecupArrets thread = new ThreadRecupArrets(horaires, dataCollector, link);
             thread.start();

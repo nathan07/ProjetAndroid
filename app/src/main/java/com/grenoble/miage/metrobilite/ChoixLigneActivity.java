@@ -1,6 +1,5 @@
 package com.grenoble.miage.metrobilite;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -9,13 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,12 +24,7 @@ import java.util.Comparator;
 public class ChoixLigneActivity extends AppCompatActivity {
 
     private Button retour;
-    private ListView listeLignesTram;
-    private ListView listeLignesChrono;
-    private ListView listeLignesFlexo;
-    private ListView listeLignesProximo;
     private JSONObject[] lignes = null;
-    //private JSONObject[] lignesTram = null;
     private ArrayList<Ligne> lignesTram = null;
     private ArrayList<Ligne> lignesChrono = null;
     private ArrayList<Ligne> lignesFlexo = null;
@@ -45,7 +34,16 @@ public class ChoixLigneActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chargement_spinner);
+        setContentView(R.layout.activity_choix_ligne);
+
+        this.retour = (Button) findViewById(R.id.retour_button);
+        retour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent retourAuMenu = new Intent(ChoixLigneActivity.this, AccueilActivity.class);
+                startActivity(retourAuMenu);
+            }
+        });
 
         final DataCollector dataCollector = new DataCollector();
         try {
@@ -60,17 +58,11 @@ public class ChoixLigneActivity extends AppCompatActivity {
 
         if (lignes!=null && lignes.length != 0) {
 
-
-
-            //lignesTram = new JSONObject[compterLignes("TRAM", lignes)];
             lignesTram = new ArrayList<Ligne>();
             lignesChrono = new ArrayList<Ligne>();
             lignesFlexo = new ArrayList<Ligne>();
             lignesProximo = new ArrayList<Ligne>();
 
-            int indexLignesChrono = 0;
-            int indexLignesFlexo = 0;
-            int indexLignesProximo = 0;
             for (int i = 0; i < lignes.length; i++) {
                 try {
                     if (lignes[i].getString("type").contains("TRAM")) {
@@ -142,8 +134,8 @@ public class ChoixLigneActivity extends AppCompatActivity {
 
     private void addbuttonArret(GridLayout linTram, final ArrayList<Ligne> lin) {
         for (int i = 0; i < lin.size(); i++) {
-        /*int buttonStyle = R.style.Widget_AppCompat_Button;
-        Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
+            /*int buttonStyle = R.style.Widget_AppCompat_Button;
+            Button bt=new Button (new ContextThemeWrapper(this, buttonStyle), null, buttonStyle);*/
             Button bt = new Button(this);
             bt.setText(lin.get(i).getShortName());
             bt.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.buttoncircle));
@@ -163,18 +155,4 @@ public class ChoixLigneActivity extends AppCompatActivity {
         }
     }
 
-
-    private int compterLignes(String l, JSONObject[] lignes) {
-        int res = 0;
-        for(int i = 0;i<lignes.length;i++) {
-            try {
-                if(lignes[i].getString("type").contains(l)) {
-                    res++;
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return res;
-    }
 }
